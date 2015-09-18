@@ -1,9 +1,9 @@
-com_port = 'COM6';
+config
 
 if ~exist('zaber', 'var') 
 %    zaber_clean
     [s, zaber, count] = configureZabers(com_port, 2);
-    configureRTO;
+    RTO = configureRTO();
 end
 
 ZaberMoveAbsolute(zaber, 1, 0.0215 + 10e-3, true);

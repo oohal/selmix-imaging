@@ -1,4 +1,4 @@
-data_dir = 'C:/junk/baselinescan-001/';
+data_dir = 'C:/imaging/scans/baselinescan-001';
 
 matfile = strcat(data_dir, '/', 'scan.mat');
 datfile = strcat(data_dir, '/', 'pixels.dat');
@@ -19,6 +19,10 @@ pixel_index = 1;
 
 for i = 1:total_pixels-1
     data = read_singlefile(datfile, 5000, i+1, 1);
+    
+    if isempty(data)
+        break;
+    end
 
     fringeseg = data(1:5000);
     fringeseg = fringeseg - mean(fringeseg);
@@ -39,9 +43,9 @@ for i = 1:total_pixels-1
 %     subplot(212); plot(angle(spec));
 
     if mod(i, ticker) == 0
-        img_preview2(amplitude, phase, scan_points(1), scan_points(2), i);
+        show_img(amplitude, phase, scan_points(1), scan_points(2), i);
     end
 end
 
 pixels_read = i;
-img_preview2(amplitude, phase, scan_points(1), scan_points(2));
+[mag_pic, ang_pic] = show_img(amplitude, phase, scan_points(1), scan_points(2), pixels_read);

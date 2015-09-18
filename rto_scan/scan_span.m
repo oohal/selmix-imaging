@@ -7,14 +7,15 @@ y_points = scan_center(2):deltas(2):(scan_center(2) + scan_area(2));
 
 %% hardware config
 % zabers
-zaber_axes = [1, 2];
-scan_type  = 'x';
+zaber_axes      = [1, 2];
+
+scan_type = 'x';
 
 %% setup scan
 % create hardware resources
 zaber_clean
 [s, zaber, count] = configureZabers(com_port, 2);
-RTO = configureRTO();
+configureRTO;
 
 %% get the baseline waveform
 disp('Moving to bl_point');

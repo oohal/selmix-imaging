@@ -9,7 +9,7 @@ function [ ref_wfm ] = update_baseline(RTO, zaber, x)
     fprintf(RTO, 'REFCurve1:SOURce C1W1');
     fprintf(RTO, 'REFCurve1:STATe ON');
     fprintf(RTO, 'CHANnel1:WAVeform1:ARIThmetics AVERage');
-    fprintf(RTO, 'ACQuire:COUNt 2000');
+    fprintf(RTO, 'ACQuire:COUNt 9000');
     
     % start zaber move
     fprintf(RTO, 'ACQuire:ARESet:IMMediate'); % reset the averaging
@@ -20,12 +20,11 @@ function [ ref_wfm ] = update_baseline(RTO, zaber, x)
     
     % TODO: this might not be the best way to do this. Look at how blind
     % time, etc effects the quality of the reference.
-    
-    ZaberMoveAbsolute(zaber, 1, x, false);
     fprintf(RTO, 'REFCurve1:CLEar');
+    ZaberMoveAbsolute(zaber, 1, x, false);
     fprintf(RTO, 'RUNSingle');
 
-    pause(10);
+    pause(15);
     fprintf(RTO, 'REFCurve1:UPDate');
     
     ref_wfm = get_wfmvalues(RTO, 'REFCurve1:DATA:VALues?');
