@@ -1,15 +1,16 @@
 com_port      = 'COM1';     % serial port the zabers are on
 sRTO_hostname = '10.1.1.3'; % IP or network name of the scope
 
-save_prefix = 'water';
+save_prefix = 'ipa-water';
 save_dir    = 'c:/imaging/scans/';
 
-scan_center = [0.0213,    0.0460]; % absolute position offsets of the 'center'
+scan_center = [0.0096,    0.0331]; % absolute position offsets of the 'center'
 scan_area   = [2000e-6,  0.25e-3]; % area over which to scan
-scan_points = [2000,       40]; % number of points to scan in the area
+scan_points = [2000,          40]; % number of points to scan in the area
+
+speed = 1e-3;
 
 should_center_bl = false;
-
 
 wait_time = 100e-3; % wait time after moving the zabers
 avgs = 64;
