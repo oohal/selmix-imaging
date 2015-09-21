@@ -1,5 +1,4 @@
 function [ ref_wfm ] = update_baseline(RTO, zaber, x)
-    config;
     % aquire the reference waveform
     % when aquiring the reference signal average over a large number of 
     % periods with the zabers moving to generate shifting fringes
@@ -14,14 +13,20 @@ function [ ref_wfm ] = update_baseline(RTO, zaber, x)
     
     % start zaber move
     fprintf(RTO, 'ACQuire:ARESet:IMMediate'); % reset the averaging
-    
-%    fprintf(RTO, 'ACQuire:SEGMented:STATe ON');
-%    fprintf(RTO, 'ACQuire:SEGMented:MAX ON');
-%    fprintf(RTO, 'ACQuire:SEGMented:AUToreplay ON');
-    
-    % TODO: this might not be the best way to do this. Look at how blind
-    % time, etc effects the quality of the reference.
+       
     fprintf(RTO, 'REFCurve1:CLEar');
+    
+    % TODO: using segmentation seems to cause issues since the
+    % capture window is too short. The blind time in the normal aquisition 
+    % mode helps with this since the reference is captured over a longer
+    % time period, so there is more fringe variation and you get a higher
+    % quality reference as a result.
+    
+    %    fprintf(RTO, 'ACQuire:SEGMented:STATe ON');
+    %    fprintf(RTO, 'ACQuire:SEGMented:MAX ON');
+    %    fprintf(RTO, 'ACQuire:SEGMented:AUToreplay ON');
+    
+    config;
     
     zaber_setspeed(zaber, 1, speed / 10, speed);
     ZaberMoveAbsolute(zaber, 1, x, false);
@@ -30,6 +35,8 @@ function [ ref_wfm ] = update_baseline(RTO, zaber, x)
     pause(0.1);
     fprintf(RTO, 'RUNSingle');
 
+    % TODO: this can probably be shorter since we don't have to wait for on 
+    % the replay to make averaging work (unlike in segmented mode).
     pause(6);
     
     fprintf(RTO, 'REFCurve1:UPDate');
