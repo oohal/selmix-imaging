@@ -55,7 +55,8 @@ disp('Ready to start. Press a key to begin.'); pause();
 
 % create scan directory
 output_dir = next_free_filename(save_prefix, save_dir, true);
-output_file = strcat(output_dir, '/pixels.dat');
+math_output_file = strcat(output_dir, '/pixels.dat');
+raw_output_file  = strcat(output_dir, '/pixels_raw.dat');
 mkdir(output_dir);
 
 savefile = sprintf('%s/scan.mat', output_dir);
@@ -72,17 +73,21 @@ pixel_times     = zeros(total_pixels, 1);
 window = hann(3000);
 
 peaks = zeros(total_pixels, 1);
+baselines = cell(scan_points(1)); % one baseline waveform for each row
 
 % run the actual scan
 for i = 1:scan_points(2)
    for j = 1:scan_points(1);
+       %%
         start = tic();
         
         ZaberMoveAbsolute(zaber, 1, x_points(j), true);
         pause(wait_time);
        
-        data = aquire_pixel(RTO, avgs);
-        save_singlefile(output_file, data);
+        % aquire and store the waveform data
+        [data, raw] = aquire_pixel(RTO, avgs);
+        save_singlefile(math_output_file, data);
+        save_singlefile(raw_output_file, raw);
 
         % process pixel data to get amplitude and phase data for each
         fringseg = data(2001:5000);
@@ -90,7 +95,10 @@ for i = 1:scan_points(2)
         spec = fft(window .* fringseg);
         [p, index] = max(abs(spec));
         peaks(pixel_index) = index;
-        in = mode(peaks(1:pixel_index));
+        
+        if pixel_index < 5000
+            in = mode(peaks(1:pixel_index));
+        end
 
         amp(pixel_index) = p;
         ang(pixel_index) = angle(spec(in));
@@ -113,7 +121,7 @@ for i = 1:scan_points(2)
    end
    
    % scan back to the start point and update the baseline along the way
-   update_baseline(RTO, zaber, x_points(1));
+   baselines{i} = update_baseline(RTO, zaber, x_points(1));
 end
 
 end_time = now();
