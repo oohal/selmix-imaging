@@ -1,4 +1,4 @@
-function [ data ] = read_singlefile( name, points, index, len )
+function [ data, blocks ] = read_singlefile( name, points, index, len )
 % read_singlefile - assumes each waveform is stored in the file ``name"
 % as a fixed length record containing ``points".
 %           
@@ -13,11 +13,12 @@ function [ data ] = read_singlefile( name, points, index, len )
     end
     
     if ~exist('index', 'var')
-        index = 1;    
+        index = 1;
     end
     
     fseek(fd, (index - 1) * points * 4, 'bof');
-    data = fread(fd, points * len, 'single');
+    [data, count] = fread(fd, points * len, 'single');
+    blocks = floor(count / points);
     
     fclose(fd);
 end

@@ -5,7 +5,7 @@ function [ name, n ] = next_free_filename( prefix, directory, want_dir )
 
     if exist('directory', 'var')
         if ~exist(directory, 'dir')
-            error('%s does not exist');
+            error('%s does not exist', directory);
         end
         
         prefix = fullfile(directory, prefix); % bake dir into the prefix
