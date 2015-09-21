@@ -1,4 +1,4 @@
-function setSpeed(zaber, devices, speed, accel)
+function zaber_setspeed(zaber, devices, speed, accel)
 
     if ~exist('accel', 'var')
         accel = speed * 100; % device accelerates in 100th of a second

@@ -1,10 +1,8 @@
-zaber_clean;
-
-[s, zaber, count] = configureZabers('COM1', 2);
+if ~exist('zaber', 'var')
+    zaber_clean;
+    config;
+    [s, zaber, count] = configureZabers(com_port, 2);
+end
 
 pos = ZaberReturnCurrentPosition(zaber, 0);
 position = pos(:,2)'
-
-ZaberClose(zaber);
-fclose(s);
-clear si zaber s;

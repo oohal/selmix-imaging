@@ -5,5 +5,8 @@ if ~exist('zaber', 'var')
     [s, zaber, count] = configureZabers(com_port, 2);
 end
 
-ZaberHome(zaber, 1, true);
-ZaberHome(zaber, 2, true);
+config;
+
+for i = 1:length(scan_center)
+    ZaberMoveAbsolute(zaber, i, scan_center(i), true);
+end
