@@ -7,9 +7,8 @@ function [ ref_wfm ] = update_baseline(RTO, zaber, frequency, x1, x2)
     fprintf(RTO, 'STOP');
     
     % configure the timebase so we have a full period per screen
-    fprintf(RTO, 'TIMebase:RANGe %e', 1/frequency * 0.90); % setup time base
+    fprintf(RTO, 'TIMebase:RANGe %e', 2 * 1/frequency * 0.90); % setup time base
     fprintf(RTO, 'TIMebase:POS %e', 0);
-    %fprintf(RTO, 'TIMebase:REF %e', 0);
     
     fprintf(RTO, 'REFCurve1:SOURce C1W1');
     fprintf(RTO, 'REFCurve1:STATe ON');
@@ -66,7 +65,7 @@ function [ ref_wfm ] = update_baseline(RTO, zaber, frequency, x1, x2)
     fprintf(RTO, 'REFCurve1:UPDate');
     
     ref_wfm = get_wfmvalues(RTO, 'REFCurve1:DATA:VALues?');
-    figure; plot(ref_wfm); title(sprintf('reference waveform - %d avgs', frequency));
+    figure(999); plot(ref_wfm); title(sprintf('reference waveform - %d avgs', frequency));
     
     config;
     zaber_setspeed(zaber, 1, speed);

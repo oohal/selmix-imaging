@@ -5,22 +5,21 @@
 % throughout the code base.
 %
 
-com_port      = 'COM1';     % serial port the zabers are on
+com_port      = 'COM1'; % serial port the zabers are on
+fgen_port     = 'COM5'; % serial port of the function gen
+
 sRTO_hostname = '10.1.1.3'; % IP or network name of the scope
 
-save_prefix = 'thermal';
+save_prefix = 'thermal-ramp-2v';
 save_dir    = 'c:/imaging/scans/';
 
-scan_center = [0.0289,    0.0335]; % absolute position offsets of the 'center'
-scan_area   = [1500e-6,  0.25e-3]; % area over which to scan
-scan_points = [1500,          20]; % number of points to scan in the area
-
+scan_center = [0.0292, 0.0335]; % absolute position offsets of the 'center'
 speed = 1e-3; % zaber movement speed
 
-should_center_bl = false;
+avgs = 128;
+frequencies = floor(logspace(2, log10(150e3), 200)); % frequency sweep range
+voltage = 1;
 
-wait_time = 100e-3; % wait time after moving the zabers
-avgs = 64;
 
 % misc experiment setup details
 target = 'flow channel + mirror + cracks + iris';
